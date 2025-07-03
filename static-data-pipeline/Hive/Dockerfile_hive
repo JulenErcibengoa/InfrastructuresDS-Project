@@ -1,0 +1,22 @@
+FROM apache/hive:3.1.3
+
+USER root
+
+RUN apt-get update && \
+    apt-get install -y jq dos2unix netcat-openbsd && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /app
+RUN mkdir -p /app/data
+
+COPY Hive/scripts/convert_to_jsonl.sh /usr/local/bin/convert_to_jsonl.sh
+COPY Hive/scripts/create_tables.sh /usr/local/bin/create_tables.sh
+COPY Hive/scripts/pipeline.sh /usr/local/bin/pipeline.sh
+
+RUN dos2unix /usr/local/bin/convert_to_jsonl.sh && chmod 755 /usr/local/bin/convert_to_jsonl.sh
+RUN dos2unix /usr/local/bin/create_tables.sh && chmod 755 /usr/local/bin/create_tables.sh
+RUN dos2unix /usr/local/bin/pipeline.sh && chmod 755 /usr/local/bin/pipeline.sh
+
+ENTRYPOINT ["/usr/local/bin/pipeline.sh"]
+
+USER hive
