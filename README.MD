@@ -45,6 +45,7 @@ Bla bla bla bla
 
 In order to make everything work and connect all the databases with `superset`, there are several steps that need to be executed.
 
+### 3.1 Static data
 Firstly we will start with the **static data**. You need to open a `terminal` and go to the folder where the repository or project is located. Then, you need to run the following command:
 
 ```
@@ -59,6 +60,18 @@ Then, the port `http://localhost:8088/` should be oppened to access `Superset` a
 
 - USERNAME: **admin**
 - PASSWORD: **admin**
+
+After that, the `Superset` main page will open. Then, you need to connect `Apache Hive` to `Superset`. To do so, click on **Settings** --> **Database Connections**:
+
+![Alt text](report/figures/02-superset-connection.PNG)
+
+Then, click on **+ DATABASE** and select `Apache Hive` on the **SUPPORTED DATABASES** scrolling window:
+
+![Alt text](report/figures/03-Connect-hive-to-superset.jpg)
+
+
+### 3.2 Dynamic data
+
 
 
 
