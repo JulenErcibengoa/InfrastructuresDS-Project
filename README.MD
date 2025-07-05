@@ -8,8 +8,7 @@ The architecture satisfies every functional and technical requirement of the ass
 |-------|---------|----------------------|
 | **Batch storage** | **Apache Hive**  | Holds the static user graph (`edges1`), user metadata (`users1`), and MBTI labels (`mbti_labels`). |
 | **Stream ingestion** | **Python + Paho-MQTT** → **Mosquitto** → **Kafka** | A containerised Python script emits live tweets over MQTT; a lightweight MQTT–Kafka bridge forwards them to a Kafka topic. |
-| **Real-time analytics** | **Apache Druid** | Consumes the Kafka topic and exposes a star-schema table with rolling tweet statistics. |
-| **Query layer** | **Superset native connectors** | Direct Hive and Druid connections enable blended queries without extra ETL. |
+| **Real-time analytics** | **Apache Druid** | Consumes the Kafka topic and exposes a star-schema table with rolling tweets. |
 | **Visualisation** | **Superset dashboard** | A single composite chart fuses static MBTI traits with streaming tweet volumes to reveal behavioural patterns. |
 
 #### Note:
@@ -140,7 +139,7 @@ When the container starts, it executes the `pipeline.sh` script, which orchestra
 
 
 ### `Superset` 
-The `superset` container is the second service launched by the `docker-compose-static-data.yml` file. It builds a custom image based on the official `apache/superset:latest` image, extending it with the necessary dependencies and initialization scripts to fully automate the setup of the Superset environment:
+The `superset` container is the second service launched by the `docker-compose-static-data.yml` file. With `Dockerfile_superset`, it builds a custom image based on the official `apache/superset:latest` image, extending it with the necessary dependencies and initialization scripts to fully automate the setup of the `Superset` environment:
 
 - **Adds required Python libraries** to connect Superset with Hive and MySQL.
 - **Includes a startup script** (`start_superset.sh`) that:
