@@ -69,6 +69,15 @@ Then, click on **+ DATABASE** and select `Apache Hive` on the **SUPPORTED DATABA
 
 ![Alt text](report/figures/03-Connect-hive-to-superset.jpg)
 
+Then, the following will appear:
+
+![Alt text](report/figures/04-test-connection.PNG)
+
+and you need to introduce the following command on **SQLALCHEMI URY**:
+
+- hive://hive@hive:10000/default
+
+
 
 ### 3.2 Dynamic data
 
