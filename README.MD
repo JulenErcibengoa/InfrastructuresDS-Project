@@ -84,6 +84,8 @@ After that, click on **CONNECT** and close the **Connect a database** window. No
 - mbti_labels
 - users1
 
+![Alt text](report/figures/05-see-tables.jpg)
+
 
 
 
