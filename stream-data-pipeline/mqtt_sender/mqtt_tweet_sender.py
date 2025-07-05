@@ -8,13 +8,21 @@ import paho.mqtt.client as mqtt
 json_file = '/app/data/tweets1.json'
 gap = 4
 
-BROKER = "mosquitto" 
-PORT = 1883
-mqtt_topic = "tweets_topic"
-KEEPALIVE = 60
+mqtt_topic = "tweets"
 
-client = mqtt.Client()
-client.connect(BROKER, PORT, KEEPALIVE)
+client = mqtt.Client("TweetPublisher")
+
+# ----- retry loop -----
+while True:
+    try:
+        client.connect("mosquitto", 1883, 60)
+        break                           # success!
+    except Exception as e:
+        print(f"[MQTT] broker not up yet: {e}; retrying in 5 s")
+        time.sleep(5)
+
+
+client.loop_start()     # start networking loop in background
 
 with open(json_file, 'r') as file:
     tweets = json.load(file)
@@ -44,6 +52,5 @@ with open(json_file, 'r') as file:
 
         except json.JSONDecodeError as e:
             print(f"Error decoding JSON: {e}")
-        
-        
+            
         time.sleep(gap)
