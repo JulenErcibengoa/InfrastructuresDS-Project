@@ -1,6 +1,7 @@
 # Superset visualisation project
 
-This repository delivers a **ready-to-run data platform** that transforms the raw Twitter-personality data into an interactive, real-time dashboard in **Apache Superset**.  
+This repository delivers a **ready-to-run data platform** that transforms the raw Twitter-personality data into an interactive, real-time dashboard in **Apache Superset**. 
+
 The architecture satisfies every functional and technical requirement of the assignment while keeping the deployment footprint lean (two Compose files, zero manual containers).
 
 | Layer | Tooling | Role in the pipeline |
@@ -25,7 +26,7 @@ This file is required for the real-time tweet ingestion component.
 
 The dataset consists of four separate files, each capturing a different aspect of the Twitter user ecosystem. Together, they offer a comprehensive view of user behavior, personality, and social connections.
 
----
+
 
 ### 🔗 `edges1.json`
 Describes the **network relationships** between users.
@@ -37,7 +38,7 @@ Each record includes:
 
 This file models a directed social graph.
 
----
+
 
 ### 👤 `users1.json`
 Contains **user profile metadata**.
@@ -50,7 +51,7 @@ Each entry includes:
 
 This file provides context about each user's identity and public profile.
 
----
+
 
 ### 🧠 `mbti_labels.csv`
 Stores **personality classifications** for each user, based on the MBTI model.
@@ -62,7 +63,6 @@ Columns:
 
 This data enables behavioral and psychological analysis.
 
----
 
 ### 📝 `tweets1.json`
 Contains the **tweets authored** by each user.
@@ -82,19 +82,57 @@ This file is used primarily for real-time ingestion and streaming analytics.
 ---
 # 2. Description of the project
 
-Bla bla bla
+This section is an in-depth description of the project: what files it has, what each file does and how each file connects to each other.
+
+The project is organised as follows:
+
+```
+
+│
+├───data
+│   │   edges1.json
+│   │   mbti_labels.csv
+│   │   tweets1.json
+│   │   users1.json
+│
+├───static-data-pipeline
+│   │   docker-compose-static-data.yml
+│   │
+│   ├───Hive
+│   │   │   Dockerfile_hive
+│   │   │
+│   │   └───scripts
+│   │           convert_to_jsonl.sh
+│   │           create_tables.sh
+│   │           pipeline.sh
+│   │
+│   └───Superset
+│       │   Dockerfile_superset
+│       │   superset_config.py
+│       │
+│       └───scripts
+│               start_superset.sh
+│
+└───stream-data-pipeline
+    │   docker-compose-dynamic-data.yml
+    │
+    └───mqtt_sender
+            Dockerfile
+            mqtt_tweet_sender.py
+
+```
+
+The `data` folder contains the four data files necessary to run the project. The `static-data-pipeline` folder handles the static data, and the `stream-data-pipeline` the stream data. 
 
 
-
-
-## 2.1 Static data
+## 2.1 static-data-pipeline
 
 Bla bla bla bla
 
 
 
 
-## 2.2 Stream data
+## 2.2 stream-data-pipeline
 
 Bla bla bla bla
 
@@ -102,8 +140,8 @@ Bla bla bla bla
 
 
 
-
-# 3. How to start the project
+---
+# 3. How to launch the project
 
 In order to make everything work and connect all the databases with `superset`, there are several steps that need to be executed.
 
@@ -153,7 +191,7 @@ Now, `Apache Hive` and `Superset` should be connected. To check it, go to **SQL*
 If everything is working correctly, this is what you should see: 
 ![Alt text](report/figures/05-see-tables.jpg)
 
-Now, the dynamic data needs to be connected.
+Now, the stream data needs to be connected.
 
 
 
