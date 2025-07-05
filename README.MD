@@ -24,15 +24,15 @@ Bla bla bla
 
 
 
----
-# 2.1 Static data
+
+## 2.1 Static data
 
 Bla bla bla bla
 
 
 
----
-# 2.2 Stream data
+
+## 2.2 Stream data
 
 Bla bla bla bla
 
@@ -51,9 +51,14 @@ Firstly we will start with the **static data**. You need to open a `terminal` an
 docker-compose -f static-data-pipeline/docker-compose-static-data.yml up
 ```
 
-This will 
+This will execute the [docker-compose](static-data-pipeline/docker-compose-static-data.yml) file of the **static data** and set up everything to connect `hive` with `superset`. This process will last like a minute, and when it's done the following commands will appear on the `terminal`:
 
+![Alt text](report/figures/01-static-data-docker-compose-terminal-output.PNG)
 
+Then, the port `http://localhost:8088/` should be oppened to access `Superset` and introduce the following:
+
+- USERNAME: **admin**
+- PASSWORD: **admin**
 
 
 
