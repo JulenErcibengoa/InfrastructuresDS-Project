@@ -1,6 +1,20 @@
 # Superset visualisation project
 
-(Project explanation)
+This repository delivers a **ready-to-run data platform** that transforms the raw Twitter-personality data into an interactive, real-time dashboard in **Apache Superset**.  
+The architecture satisfies every functional and technical requirement of the assignment while keeping the deployment footprint lean (two Compose files, zero manual containers).
+
+| Layer | Tooling | Role in the pipeline |
+|-------|---------|----------------------|
+| **Batch storage** | **Apache Hive**  | Holds the static user graph (`edges1`), user metadata (`users1`), and MBTI labels (`mbti_labels`). |
+| **Stream ingestion** | **Python + Paho-MQTT** → **Mosquitto** → **Kafka** | A containerised Python script emits live tweets over MQTT; a lightweight MQTT–Kafka bridge forwards them to a Kafka topic. |
+| **Real-time analytics** | **Apache Druid** | Consumes the Kafka topic and exposes a star-schema table with rolling tweet statistics. |
+| **Query layer** | **Superset native connectors** | Direct Hive and Druid connections enable blended queries without extra ETL. |
+| **Visualisation** | **Superset dashboard** | A single composite chart fuses static MBTI traits with streaming tweet volumes to reveal behavioural patterns. |
+
+#### Note:
+For the project to run correctly, make sure the `tweets1.json` file is placed inside the `/data` folder.  
+This file is required for the real-time tweet ingestion component.
+
 
 
 
@@ -9,7 +23,55 @@
 ---
 # 1. Description of the data
 
-Bla bla bla bla
+The dataset consists of four separate files, each capturing a different aspect of the Twitter user ecosystem. Together, they offer a comprehensive view of user behavior, personality, and social connections.
+
+---
+
+### 🔗 `edges1.json`
+Describes the **network relationships** between users.
+
+Each record includes:
+- `follows`: List of user IDs this user follows  
+- `is_followed_by`: List of user IDs following this user  
+- `id`: Unique identifier of the user  
+
+This file models a directed social graph.
+
+---
+
+### 👤 `users1.json`
+Contains **user profile metadata**.
+
+Each entry includes:
+- `screen_name`: The user’s Twitter handle  
+- `location`: Profile location (free text)  
+- `verified`: Boolean flag indicating verification status  
+- ...
+
+This file provides context about each user's identity and public profile.
+
+---
+
+### 🧠 `mbti_labels.csv`
+Stores **personality classifications** for each user, based on the MBTI model.
+
+Columns:
+- `id`: User ID (matching the other files)  
+- `mbti_personality`: MBTI type
+- `pers_id`: Alternative personality identifier  
+
+This data enables behavioral and psychological analysis.
+
+---
+
+### 📝 `tweets1.json`
+Contains the **tweets authored** by each user.
+
+Each record includes:
+- `id`: User ID  
+- `tweets`: List of tweet texts (strings) authored by that user  
+
+This file is used primarily for real-time ingestion and streaming analytics.
 
 
 
@@ -45,23 +107,25 @@ Bla bla bla bla
 
 In order to make everything work and connect all the databases with `superset`, there are several steps that need to be executed.
 
-### 3.1 Static data
+## 3.1 Static data
 Firstly we will start with the **static data**. You need to open a `terminal` and go to the folder where the repository or project is located. Then, you need to run the following command:
 
 ```
 docker-compose -f static-data-pipeline/docker-compose-static-data.yml up
 ```
 
-This will execute the [docker-compose](static-data-pipeline/docker-compose-static-data.yml) file of the **static data** and set up everything to connect `hive` with `superset`. This process will last like a minute, and when it's done the following commands will appear on the `terminal`:
+This will execute the [docker-compose](static-data-pipeline/docker-compose-static-data.yml) file of the **static data** and set up everything to connect `Hive` with `Superset`. This process will last like a minute, and when it's done the following commands will appear on the `terminal`:
 
 ![Alt text](report/figures/01-static-data-docker-compose-terminal-output.PNG)
 
-Then, the port `http://localhost:8088/` should be oppened to access `Superset` and introduce the following:
+Then, to access `Superset` the port `http://localhost:8088/` should be oppened and introduce the following credentials:
 
 - USERNAME: **admin**
 - PASSWORD: **admin**
 
-After that, the `Superset` main page will open. Then, you need to connect `Apache Hive` to `Superset`. To do so, click on **Settings** --> **Database Connections**:
+After that, the `Superset` main page will open. 
+
+Now you need to connect `Apache Hive` to `Superset`. To do so, click on **Settings** --> **Database Connections**:
 
 ![Alt text](report/figures/02-superset-connection.PNG)
 
@@ -79,25 +143,34 @@ and you need to introduce the following command on **SQLALCHEMI URY**:
 hive://hive@hive:10000/default
 ```
 
-After that, click on **CONNECT** and close the **Connect a database** window. Now, `Apache Hive` and `Superset` should be connected. To check it, go to **SQL** --> **SQL Lab** and check whether on **SEE TABLE SCHEMA** appear the following three tables:
+After that, click on **CONNECT** and close the **Connect a database** window. 
+
+Now, `Apache Hive` and `Superset` should be connected. To check it, go to **SQL** --> **SQL Lab** and check whether on **SEE TABLE SCHEMA** appear the following three tables:
 - edges1
 - mbti_labels
 - users1
 
+If everything is working correctly, this is what you should see: 
 ![Alt text](report/figures/05-see-tables.jpg)
 
+Now, the dynamic data needs to be connected.
 
 
 
 
+## 3.2 Stream data
 
-### 3.2 Dynamic data
+TO DO
+
+
+
+
 
 
 
 
 ---
-# 4. Expected outcome
+# 4. Charts and dashboard
 
 Bla bla bla bla
 
