@@ -127,7 +127,41 @@ The `data` folder contains the four data files necessary to run the project. The
 
 ## 2.1 static-data-pipeline
 
-Bla bla bla bla
+Inside the folder, the `docker-compose-static-data.yml` file is responsible for launching the batch processing environment, which includes two services: `Apache Hive` and `Apache Superset`. These containers enable the storage of static data and its visualization through `Superset`.
+
+### `Hive` 
+The `hive` container is the first service built, using a custom image defined in `Dockerfile_hive`. This image extends the official `apache/hive:3.1.3` base image and includes additional tools and scripts required to automate the ingestion of static data into `Hive` tables.
+
+When the container starts, it executes the `pipeline.sh` script, which orchestrates the entire ingestion process:
+
+1. `convert_to_jsonl.sh` – Converts the original .json files into .jsonl (JSON Lines) format, which is more suitable for ingestion into `Hive`.
+
+2. `create_tables.sh` – Defines the `Hive` tables `edges1`, `users1`, and `mbti_labels`, and loads the converted data into them.
+
+
+### `Superset` 
+The `superset` container is the second service launched by the `docker-compose-static-data.yml` file. It builds a custom image based on the official `apache/superset:latest` image, extending it with the necessary dependencies and initialization scripts to fully automate the setup of the Superset environment:
+
+- **Adds required Python libraries** to connect Superset with Hive and MySQL.
+- **Includes a startup script** (`start_superset.sh`) that:
+  - Initializes the Superset database
+  - Creates an admin user (if it doesn't already exist)
+  - Starts the web server on port `8088`
+- **Loads a basic configuration file** (`superset_config.py`) that sets a secret key for Superset.
+
+Once running, you can access Superset at `http://localhost:8088/` using:
+
+- **Username:** `admin`  
+- **Password:** `admin`
+
+From there, Superset can connect directly to Hive to explore the static data and build visualizations.
+
+
+
+
+
+
+
 
 
 
