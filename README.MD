@@ -75,7 +75,17 @@ Then, the following will appear:
 
 and you need to introduce the following command on **SQLALCHEMI URY**:
 
-- hive://hive@hive:10000/default
+```
+hive://hive@hive:10000/default
+```
+
+After that, click on **CONNECT** and close the **Connect a database** window. Now, `Apache Hive` and `Superset` should be connected. To check it, go to **SQL** --> **SQL Lab** and check whether on **SEE TABLE SCHEMA** appear the following three tables:
+- edges1
+- mbti_labels
+- users1
+
+
+
 
 
 
