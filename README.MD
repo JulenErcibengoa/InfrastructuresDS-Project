@@ -221,6 +221,7 @@ Now, `Apache Hive` and `Superset` should be connected. To check it, go to **SQL*
 - users1
 
 If everything is working correctly, this is what you should see: 
+
 ![Alt text](report/figures/05-see-tables.jpg)
 
 Now, the stream data needs to be connected.
