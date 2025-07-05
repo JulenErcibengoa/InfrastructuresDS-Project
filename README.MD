@@ -8,12 +8,11 @@ The architecture satisfies every functional and technical requirement of the ass
 |-------|---------|----------------------|
 | **Batch storage** | **Apache Hive**  | Holds the static user graph (`edges1`), user metadata (`users1`), and MBTI labels (`mbti_labels`). |
 | **Stream ingestion** | **Python + Paho-MQTT** → **Mosquitto** → **Kafka** | A containerised Python script emits live tweets over MQTT; a lightweight MQTT–Kafka bridge forwards them to a Kafka topic. |
-| **Real-time analytics** | **Apache Druid** | Consumes the Kafka topic and exposes a star-schema table with rolling tweets. |
+| **Real-time analytics** | **Apache Druid** | Consumes the Kafka topic and exposes a table with rolling tweets. |
 | **Visualisation** | **Superset dashboard** | A single composite chart fuses static MBTI traits with streaming tweet volumes to reveal behavioural patterns. |
 
 #### Note:
-For the project to run correctly, make sure the `tweets1.json` file is placed inside the `/data` folder.  
-This file is required for the real-time tweet ingestion component.
+For the project to run correctly, make sure the `tweets1.json`, `edges1.json`, `users1.json` and `mbti_labels.csv` files are placed inside the `/data` folder.  
 
 
 
@@ -133,7 +132,7 @@ The `hive` container is the first service built, using a custom image defined in
 
 When the container starts, it executes the `pipeline.sh` script, which orchestrates the entire ingestion process:
 
-1. `convert_to_jsonl.sh` – Converts the original .json files into .jsonl (JSON Lines) format, which is more suitable for ingestion into `Hive`.
+1. `convert_to_jsonl.sh` – Converts the original .json files into .jsonl (JSON Lines) format, which is more suitable for ingestion into `Hive`. To do so, first it creates the JSONL files and then it organises them in folders, for better data handling.
 
 2. `create_tables.sh` – Defines the `Hive` tables `edges1`, `users1`, and `mbti_labels`, and loads the converted data into them.
 
