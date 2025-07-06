@@ -216,7 +216,7 @@ First, we will configure `Druid`.
 
 ## `Druid` configuration
 
-When oppening [`druid`](http://localhost:9999/), it will appear the following menu:
+When oppening [`Druid`](http://localhost:9999/), it will appear the following menu:
 
 ![Alt text](report/figures/02_Druid_menu.PNG)
 
@@ -260,47 +260,26 @@ When you open [`Superset`](http://localhost:8088/) the following will appear:
 
 ![Alt text](report/figures/09_Superset_credentials.PNG)
 
-
-
-
-
-
-
-
-
-
-
-
-
-## 3.1 Static data
-Firstly we will start with the **static data**. You need to open a `terminal` and go to the folder where the repository or project is located. Then, you need to run the following command:
-
-```
-docker-compose -f static-data-pipeline/docker-compose-static-data.yml up
-```
-
-This will execute the [docker-compose](static-data-pipeline/docker-compose-static-data.yml) file of the **static data** and set up everything to connect `Hive` with `Superset`. This process will last like a minute, and when it's done the following commands will appear on the `terminal`:
-
-![Alt text](report/figures/01-static-data-docker-compose-terminal-output.PNG)
-
-Then, to access `Superset` the port `http://localhost:8088/` should be oppened and introduce the following credentials:
+Then introduce the following credentials:
 
 - USERNAME: **admin**
 - PASSWORD: **admin**
 
 After that, the `Superset` main page will open. 
 
-Now you need to connect `Apache Hive` to `Superset`. To do so, click on **Settings** --> **Database Connections**:
+Now you need to connect `Apache Hive` to `Superset` and `Druid` to `Superset`. Both are connected following the same procedure:
 
-![Alt text](report/figures/02-superset-connection.PNG)
+First, click on **Settings** --> **Database Connections**:
+
+![Alt text](report/figures/10-superset-connection.PNG)
 
 Then, click on **+ DATABASE** and select `Apache Hive` on the **SUPPORTED DATABASES** scrolling window:
 
-![Alt text](report/figures/03-Connect-hive-to-superset.jpg)
+![Alt text](report/figures/11-Connect-hive-to-superset.jpg)
 
 Then, the following will appear:
 
-![Alt text](report/figures/04-test-connection.PNG)
+![Alt text](report/figures/12-test-connection.PNG)
 
 and you need to introduce the following command on **SQLALCHEMI URY**:
 
@@ -308,9 +287,15 @@ and you need to introduce the following command on **SQLALCHEMI URY**:
 hive://hive@hive:10000/default
 ```
 
-After that, click on **CONNECT** and close the **Connect a database** window. 
+After that, click on **CONNECT** and close the **Connect a database** window. Now, `Apache Hive` and `Superset` should be connected. To check it, refresh the page and the following should appear:
 
-Now, `Apache Hive` and `Superset` should be connected. To check it, go to **SQL** --> **SQL Lab** and check whether on **SEE TABLE SCHEMA** appear the following three tables:
+![Alt text](report/figures/13-test-hive-connection.PNG)
+
+
+
+
+
+ To check it, go to **SQL** --> **SQL Lab** and check whether on **SEE TABLE SCHEMA** appear the following three tables:
 - edges1
 - mbti_labels
 - users1
