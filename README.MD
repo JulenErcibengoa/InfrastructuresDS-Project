@@ -212,12 +212,30 @@ This means that the following ports are available to use (and we need to use the
 - http://localhost:8088/ --> `Superset` interface
 - http://localhost:9999/ --> `Druid` interface
 
+First, we will configure `Druid`.
 
+## `Druid` configuration
 
+When oppening `druid`, it will appear the following menu:
 
+![Alt text](report/figures/02_Druid_menu.PNG)
 
+You need to click in **Load data** --> **Start a new spec** and the following will appear:
 
+![Alt text](report/figures/03_Druid_load_data.PNG)
 
+Then, you need to click on **Apache Kafka** --> **Connect data -->** and the following will appear:
+
+![Alt text](report/figures/04_Druid_connect_kafka.PNG)
+
+You need to add the following:
+
+- **Bootstrap servers:**  kafka:9092
+- **Topic:** tweets
+
+and then click **Apply**. After some time (not too much), it should look something like this:
+
+![Alt text](report/figures/05_Druid_conexion_successful.PNG)
 
 
 ## 3.1 Static data
