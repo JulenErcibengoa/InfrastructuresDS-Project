@@ -128,29 +128,3 @@ services:
 
 
 
-  # druid:
-  #   image: apache/druid:33.0.0          # explicit tag – no :latest  :contentReference[oaicite:0]{index=0}
-  #   container_name: druid
-  #   restart: unless-stopped
-
-  #   # --- ports you may want to reach from the host -------------
-  #   ports:
-  #     - "8888:8888"   # Router & web console
-  #     - "8082:8082"   # Broker (SQL / Superset)
-  #     - "8081:8081"   # Coordinator/Overlord API (for ingestion specs)
-
-  #   # --- key env settings --------------------------------------
-  #   environment:
-  #     # Load Kafka ingestion extension
-  #     - druid_extensions_loadList=["druid-kafka-indexing-service"]
-  #     # keep everything on local disk + internal Derby metadata (good for dev)
-  #     - druid.metadata.storage.type=derby
-  #     - druid.storage.type=local
-  #     - druid.storage.storageDirectory=/opt/druid/var/segments
-  #     # optional: JVM heap for quick-start clusters
-  #     - DRUID_JAVA_OPTS=-Xms1g -Xmx1g
-
-  #   depends_on:
-  #     - kafka
-  #   networks:
-  #     - kafka-net
