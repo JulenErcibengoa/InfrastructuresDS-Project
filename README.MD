@@ -193,7 +193,7 @@ On startup, the `Kafka Connect` container installs the MQTT connector plugin and
 
 In order to make everything work and connect all the databases with `superset`, there are several steps that need to be executed.
 
-First, let's start all the containers by running the following command on the project repository:
+First, let's start all the containers by running the following command on the project repository folder:
 
 ```
 docker-compose -f pipeline-docker-compose.yml up
@@ -216,7 +216,7 @@ First, we will configure `Druid`.
 
 ## `Druid` configuration
 
-When oppening `druid`, it will appear the following menu:
+When oppening [`druid`](http://localhost:8088/), it will appear the following menu:
 
 ![Alt text](report/figures/02_Druid_menu.PNG)
 
@@ -249,7 +249,15 @@ Then, click **Next: Edit spec** and finally click **Submit**. The following shou
 
 ![Alt text](report/figures/08_Druid_submitted.PNG)
 
-and after a while the **PENDING** will transfomr into **RUNNING**. Now we have `Druid` set up, let's configure `Superset`.
+and after a while the **PENDING** will transfomr into **RUNNING**. 
+
+Now that we have `Druid` set up, let's configure `Superset`.
+
+
+## `Superset` configuration
+
+
+
 
 
 
