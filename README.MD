@@ -94,14 +94,13 @@ This section provides an in-depth overview of the project structure, explaining 
 
 ```
 
-├── combined-docker-compose.yml
+├── pipeline-docker-compose.yml
 ├── data
 │   ├── edges1.json                           <-- Must be added
 │   ├── mbti_labels.csv                       <-- Must be added
 │   ├── tweets1.json                          <-- Must be added
 │   └── users1.json                           <-- Must be added
 ├── static-data-pipeline
-│   ├── docker-compose-static-data.yml
 │   ├── Hive
 │   │   ├── Dockerfile_hive
 │   │   └── scripts
@@ -114,7 +113,6 @@ This section provides an in-depth overview of the project structure, explaining 
 │       └── scripts
 │           └── start_superset.sh
 └── stream-data-pipeline
-    ├── docker-compose-dynamic-data.yml
     ├── mosquitto.conf
     ├── mqtt-source.json
     └── mqtt_sender
@@ -124,7 +122,7 @@ This section provides an in-depth overview of the project structure, explaining 
 
 ```
 
-The `data` folder contains the four data files necessary to run the project. The `static-data-pipeline` folder contains the files that handle the static data, and the `stream-data-pipeline` contains the files for the stream data. There is also a combined-docker-compose.yml at the root which can launch the entire stack at once (more on this in the launch section).
+The `data` folder contains the four data files necessary to run the project. The `static-data-pipeline` folder contains the files that handle the static data, and the `stream-data-pipeline` contains the files for the stream data. There is also a pipeline-docker-compose.yml at the root which can launch the entire stack at once (more on this in the launch section).
 
 
 ## 2.1 static-data-pipeline
