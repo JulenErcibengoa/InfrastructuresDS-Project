@@ -216,7 +216,7 @@ First, we will configure `Druid`.
 
 ## `Druid` configuration
 
-When oppening [`druid`](http://localhost:8088/), it will appear the following menu:
+When oppening [`druid`](http://localhost:9999/), it will appear the following menu:
 
 ![Alt text](report/figures/02_Druid_menu.PNG)
 
@@ -256,6 +256,9 @@ Now that we have `Druid` set up, let's configure `Superset`.
 
 ## `Superset` configuration
 
+When you open [`Superset`](http://localhost:8088/) the following will appear:
+
+![Alt text](report/figures/09_Superset_credentials.PNG)
 
 
 
