@@ -298,7 +298,7 @@ To connect `Druid` and `Superset`, the same procedure has to be executed. First 
 Now, add the following on **SQLALCHEMI URY**:
 
 ```
-hive://hive@hive:10000/default
+druid://druid:9999/druid/v2/sql/
 ```
 
 and click **CONNECT**. If everything was correct, it should appear something like this:
@@ -312,8 +312,63 @@ With this, now it's time to make **SQL** queries and create charts.
 ---
 # 4. Charts and dashboard
 
-Bla bla bla bla
+We will make three charts and combine them into a single dashboard. The three plots will be these ones:
 
+1. The distribution of the MBTI personality labels
+2. A bubble plot about the amount of tweets, retweets and favourites
+3. The real-time incoming tweets on a table format
+
+To make these charts, inside `Superset` datasets must be created. To do so, click on **Datasets** and then on **+ DATASET**. 
+
+![Alt text](report/figures/16-dataset-creation.PNG)
+
+Now there are different options:
+
+1. Select as **DATABASE** `Apache Hive`, as **SCHEMA** select `default` and as **TABLE** select `mbti_labels`. This will create the `dataset` needed for the first chart.
+2. Select as **DATABASE** `Apache Hive`, as **SCHEMA** select `default` and as **TABLE** select `users1`. This will create one of the `datasets` needed for the second chart.
+3. Select as **DATABASE** `Apache Druid`, as **SCHEMA** select `druid` and as **TABLE** select `tweets`. This will create the `dataset` needed for the third chart.
+
+Now, before starting to make the charts, another dataset must be created. This will combine `mbti_labels` and `users1`, and we will be able to know how many tweets each user has made, along with his MBTI label.
+
+To do so, go to **SQL** --> **SQL Lab**. Then, select as **DATABASE** `Apache Hive`, **SCHEMA** `default` and **SEE TABLE SCHEMA** as `mbti_labels` and `users1`. Then, run the following SQL query:
+
+```
+SELECT
+    CAST(u.id AS STRING)          AS user_id,              -- ← string, not BigInt
+    u.screen_name,                                       
+    CAST(u.statuses_count        AS DOUBLE) AS statuses_count,
+    CAST(u.total_favorite_count  AS DOUBLE) AS total_favorite_count,
+    CAST(u.total_retweet_count   AS DOUBLE) AS total_retweet_count,
+    m.mbti_personality                      AS mbti_label
+FROM users1            u
+LEFT JOIN mbti_labels  m
+       ON u.id = m.id
+WHERE m.mbti_personality IS NOT NULL
+  AND m.mbti_personality NOT IN ('nan', 'NaN');
+```
+
+and save the new dataset as `Users_with_mbti_labels`.
+
+Now that we have created the necessary `datasets` we can start making charts. Here we show the configurations for each of the charts as images:
+
+### Chart 1:
+
+![Alt text](report/figures/17_chart1.PNG)
+
+### Chart 2:
+
+![Alt text](report/figures/18_chart2.PNG)
+
+For this chart the axis are on logarithmic scale.
+
+### Chart 3:
+
+![Alt text](report/figures/19_chart3.PNG)
+
+
+After making the charts, they can be integrated into a `Superset` dashboard that will look like this:
+
+![Alt text](report/figures/final_dashboard_example.PNG)
 
 
 
@@ -323,18 +378,3 @@ Bla bla bla bla
 - Julen Ercibengoa
 - Erik
 
-
-
-
-
-
-
-
-docker-compose -f combined-docker-compose.yml up
-
-hive://hive@hive:10000/default
-
-druid://druid:9999/druid/v2/sql/
-
-
-## TO CHECK 
