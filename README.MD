@@ -6,7 +6,7 @@ The architecture integrates batch processing and stream processing for real-time
 
 | Layer                   | Tooling                                                         | Role in the Pipeline                                                             |
 |-------------------------|-----------------------------------------------------------------|----------------------------------------------------------------------------------|
-| **Batch Storage**       | **Apache Hive**                                                | Holds static user graph (`edges1`), user metadata (`users1`), and MBTI labels.   |
+| **Batch Storage**       | **Apache Hive**                                                | Holds static user graph (`edges1`), user metadata (`users1`), and MBTI labels (`mbti_labels.csv`).   |
 | **Stream Ingestion**    | **Python + Paho-MQTT → Mosquitto → Kafka**                     | Publishes live tweets via MQTT; an MQTT–Kafka bridge forwards them to Kafka.     |
 | **Real-time Analytics** | **Apache Druid**                                               | Consumes the Kafka topic and exposes a continuously-updated tweets table.        |
 | **Visualization**       | **Apache Superset**                                            | Dashboards that blend static MBTI traits with streaming tweet activity.          |
@@ -184,7 +184,7 @@ On startup, the `Kafka Connect` container installs the MQTT connector plugin and
 
 ### `Druid` (Real-Time Analytics Store)
 
-`Apache Druid` is deployed as the real-time analytics database in the stream pipeline. In this project we use a single-container `Druid` service (via a pre-built image) that encapsulates `Druid’s` necessary components. The `Druid` service is configured to join the same Docker network (kafka-net) so that it can reach the `Kafka` broker by name. We expose `Druid’s` internal ports for monitoring and SQL access: notably, port 8888 (which can be used to access `Druid’s` web console).
+`Apache Druid` is deployed as the real-time analytics database in the stream pipeline. In this project we use a single-container `Druid` service (via a pre-built image) that encapsulates `Druid’s` necessary components. The `Druid` service is configured to join the same Docker network (kafka-net) so that it can reach the `Kafka` broker by name. We expose `Druid’s` internal ports for monitoring and SQL access: notably, port 8888 (which can be used to access `Druid’s` web console). `Druid` is then reachable from `Superset` since the `pydruid` library is installed.
 
 
 
@@ -192,6 +192,14 @@ On startup, the `Kafka Connect` container installs the MQTT connector plugin and
 # 3. How to launch the project
 
 In order to make everything work and connect all the databases with `superset`, there are several steps that need to be executed.
+
+First, let's start all the containers by running the following command on the project repository:
+
+```
+docker-compose -f pipeline-docker-compose.yml up
+```
+
+
 
 ## 3.1 Static data
 Firstly we will start with the **static data**. You need to open a `terminal` and go to the folder where the repository or project is located. Then, you need to run the following command:
