@@ -4,15 +4,17 @@ This repository delivers a **ready-to-run data platform** that transforms the ra
 
 The architecture satisfies every functional and technical requirement of the assignment while keeping the deployment footprint lean (two Compose files, zero manual containers).
 
-| Layer | Tooling | Role in the pipeline |
-|-------|---------|----------------------|
-| **Batch storage** | **Apache Hive**  | Holds the static user graph (`edges1`), user metadata (`users1`), and MBTI labels (`mbti_labels`). |
-| **Stream ingestion** | **Python + Paho-MQTT** → **Mosquitto** → **Kafka** | A containerised Python script emits live tweets over MQTT; a lightweight MQTT–Kafka bridge forwards them to a Kafka topic. |
-| **Real-time analytics** | **Apache Druid** | Consumes the Kafka topic and exposes a table with rolling tweets. |
-| **Visualisation** | **Superset dashboard** | A single composite chart fuses static MBTI traits with streaming tweet volumes to reveal behavioural patterns. |
+
+
+...
+
+
 
 #### Note:
-For the project to run correctly, make sure the `tweets1.json`, `edges1.json`, `users1.json` and `mbti_labels.csv` files are placed inside the `/data` folder.  
+For the project to run correctly, make sure the `tweets1.json`, `edges1.json`, `users1.json` and `mbti_labels.csv` files are placed inside the `/data` folder.
+
+#### Note:
+The project has been tested on a Windows 10 local machine.
 
 
 
@@ -86,16 +88,15 @@ The project is organised as follows:
 
 ```
 
+│   combined-docker-compose.yml
 │
 ├───data
-│   │   edges1.json
-│   │   mbti_labels.csv
-│   │   tweets1.json
-│   │   users1.json
+│       edges1.json                         <-- Must be added
+│       mbti_labels.csv                     <-- Must be added
+│       tweets1.json                        <-- Must be added
+│       users1.json                         <-- Must be added
 │
 ├───static-data-pipeline
-│   │   docker-compose-static-data.yml
-│   │
 │   ├───Hive
 │   │   │   Dockerfile_hive
 │   │   │
@@ -112,7 +113,8 @@ The project is organised as follows:
 │               start_superset.sh
 │
 └───stream-data-pipeline
-    │   docker-compose-dynamic-data.yml
+    │   mosquitto.conf
+    │   mqtt-source.json
     │
     └───mqtt_sender
             Dockerfile
@@ -120,7 +122,7 @@ The project is organised as follows:
 
 ```
 
-The `data` folder contains the four data files necessary to run the project. The `static-data-pipeline` folder handles the static data, and the `stream-data-pipeline` the stream data. 
+The `data` folder contains the four data files necessary to run the project. The `static-data-pipeline` folder contains the files that handle the static data, and the `stream-data-pipeline` contains the files for the stream data. 
 
 
 ## 2.1 static-data-pipeline
