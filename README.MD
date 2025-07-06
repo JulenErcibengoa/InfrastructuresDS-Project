@@ -199,6 +199,25 @@ First, let's start all the containers by running the following command on the pr
 docker-compose -f pipeline-docker-compose.yml up
 ```
 
+This might take some time. We have to wait until `Superset` and `Druid` are ready. When `Superset` is ready, the following will appear on the terminal:
+
+![Alt text](report/figures/00_Superset_ready.PNG)
+
+And when `Druid` is ready, the following will appear:
+
+![Alt text](report/figures/01_Druid_ready.PNG)
+
+This means that the following ports are available to use (and we need to use them to configure the data):
+
+- http://localhost:8088/ --> `Superset` interface
+- http://localhost:9999/ --> `Druid` interface
+
+
+
+
+
+
+
 
 
 ## 3.1 Static data
