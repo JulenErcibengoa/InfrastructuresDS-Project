@@ -370,6 +370,7 @@ After making the charts, they can be integrated into a `Superset` dashboard that
 
 ![Alt text](report/figures/final_dashboard_example.PNG)
 
+On the dashboard it can be visualised the static data along the dynamic data. Further charts could be implemented easily following the methodology above explained.
 
 
 ---
