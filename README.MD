@@ -269,4 +269,7 @@ docker-compose -f combined-docker-compose.yml up
 
 hive://hive@hive:10000/default
 
+druid://druid:9999/druid/v2/sql/
+
+
 ## TO CHECK 

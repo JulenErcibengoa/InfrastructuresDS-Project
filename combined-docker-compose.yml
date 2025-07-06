@@ -63,6 +63,8 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - kafka-net
 
   kafka:
     image: confluentinc/cp-kafka:7.4.0
@@ -79,6 +81,8 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
     ports:
       - "9092:9092"
+    networks:
+      - kafka-net
 
   kafka-connect:
     image: confluentinc/cp-kafka-connect:7.4.0
@@ -102,11 +106,41 @@ services:
       CONNECT_REST_ADVERTISED_PORT: 8083
       CONNECT_REST_PORT: 8083
       CONNECT_PLUGIN_PATH: "/usr/share/confluent-hub-components"
+    volumes:
+      - ./stream-data-pipeline/mqtt-source.json:/config/mqtt-source.json:ro
+
     # Install the MQTT connector via Confluent Hub, then start Kafka Connect:
+
     command: >
-      bash -c 'confluent-hub install --no-prompt confluentinc/kafka-connect-mqtt:latest && /etc/confluent/docker/run'
+      bash -c '
+        # --- install the MQTT plugin ---
+        confluent-hub install --no-prompt confluentinc/kafka-connect-mqtt:latest
+
+        # --- start the worker in the background ---
+        /etc/confluent/docker/run &
+        CONNECT_PID=$!
+
+        # --- wait for REST API to answer ---
+        echo "⌛ waiting for Kafka-Connect REST ..."
+        until curl -sf http://localhost:8083/ >/dev/null; do sleep 3; done
+
+        # --- register the connector (will return 409 if already present) ---
+        echo "🚀 registering mqtt-source connector"
+        curl -sf -X POST http://localhost:8083/connectors \
+             -H "Content-Type: application/json" \
+             --data @/config/mqtt-source.json || true
+
+        # --- foreground the worker ---
+        wait $CONNECT_PID
+      '
+
+    # command: >
+    #   bash -c 'confluent-hub install --no-prompt confluentinc/kafka-connect-mqtt:latest && /etc/confluent/docker/run'
     ports:
       - "8083:8083"
+    networks:
+      - kafka-net
+
 
   mosquitto:
     image: eclipse-mosquitto:2.0.15
@@ -115,6 +149,8 @@ services:
       - "1883:1883"
     volumes:
       - ./stream-data-pipeline/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+    networks:
+      - kafka-net
 
   mqtt_sender:
     build:
@@ -125,6 +161,19 @@ services:
       - mosquitto
     volumes:
       - ./data:/app/data
+    networks:
+      - kafka-net
 
+
+  druid:
+    image: jdvelasq/druid:0.22.1
+    container_name: druid
+    ports:
+      - "8888:8888"
+      - "50070:50070"
+      - "9999:9999"
+      - "1111:8088"
+    networks:
+      - kafka-net
 
 
