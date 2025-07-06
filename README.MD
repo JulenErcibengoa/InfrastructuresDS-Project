@@ -233,6 +233,10 @@ Now the stream data needs to be connected.
 
 TO DO
 
+```
+docker-compose -f stream-data-pipeline/docker-compose-dynamic-data.yml up
+```
+
 
 
 
@@ -253,3 +257,16 @@ Bla bla bla bla
 
 - Julen Ercibengoa
 - Erik
+
+
+
+
+
+
+
+
+docker-compose -f combined-docker-compose.yml up
+
+hive://hive@hive:10000/default
+
+## TO CHECK 

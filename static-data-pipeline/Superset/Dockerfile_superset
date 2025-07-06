@@ -6,7 +6,7 @@ RUN apt-get update && \
     apt-get install -y jq dos2unix netcat-openbsd && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN pip install pymysql pyhive thrift thrift_sasl
+RUN pip install pymysql pydruid pyhive thrift thrift_sasl 
 
 COPY Superset/scripts/start_superset.sh /usr/local/bin/start_superset.sh
 RUN dos2unix /usr/local/bin/start_superset.sh && chmod 755 /usr/local/bin/start_superset.sh
