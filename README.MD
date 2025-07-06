@@ -1,13 +1,15 @@
 # Superset visualisation project
 
-This repository delivers a **ready-to-run data platform** that transforms the raw Twitter-personality data into an interactive, real-time dashboard in **Apache Superset**. 
+This repository delivers a **ready-to-run data platform** that transforms the raw Twitter-personality data into an interactive, real-time dashboard in **Apache Superset**. The project authomatically sets up everything except the `Superset` connections and the charts, which have to be manually made. 
 
-The architecture satisfies every functional and technical requirement of the assignment while keeping the deployment footprint lean (two Compose files, zero manual containers).
+The architecture integrates batch processing and stream processing for real-time data, satisfying the project’s requirements while keeping the deployment lean (using just one Docker Compose files, with zero manual container setup). Key components and their roles are outlined below:
 
-
-
-...
-
+| Layer                   | Tooling                                                         | Role in the Pipeline                                                             |
+|-------------------------|-----------------------------------------------------------------|----------------------------------------------------------------------------------|
+| **Batch Storage**       | **Apache Hive**                                                | Holds static user graph (`edges1`), user metadata (`users1`), and MBTI labels.   |
+| **Stream Ingestion**    | **Python + Paho-MQTT → Mosquitto → Kafka**                     | Publishes live tweets via MQTT; an MQTT–Kafka bridge forwards them to Kafka.     |
+| **Real-time Analytics** | **Apache Druid**                                               | Consumes the Kafka topic and exposes a continuously-updated tweets table.        |
+| **Visualization**       | **Apache Superset**                                            | Dashboards that blend static MBTI traits with streaming tweet activity.          |
 
 
 #### Note:
@@ -44,10 +46,16 @@ This file models a directed social graph.
 Contains **user profile metadata**.
 
 Each entry includes:
-- `screen_name`: The user’s Twitter handle  
-- `location`: Profile location (free text)  
-- `verified`: Boolean flag indicating verification status  
-- ...
+- `screen_name`: The user’s Twitter handle
+- `location`: Profile location (free text)
+- `verified`: Boolean flag indicating if the account is verified
+- `statuses_count`: Total number of tweets posted
+- `total_retweet_count`: Cumulative retweets the user has received
+- `total_favorite_count`: Cumulative likes the user has received
+- `total_hashtag_count`: Total hashtags the user has used
+- `total_mentions_count`: Total mentions the user has made
+- `total_media_count`: Total media (images, videos) the user has posted
+- `id`: Unique user ID
 
 This file provides context about each user's identity and public profile.
 
