@@ -237,6 +237,29 @@ and then click **Apply**. After some time (not too much), it should look somethi
 
 ![Alt text](report/figures/05_Druid_conexion_successful.PNG)
 
+Next, click on the lower-right button (**Next: Parse data -->**) until it does not allow to click anymore. You will be on this menu:
+
+![Alt text](report/figures/06_Druid_granularity.PNG)
+
+and on the **Segment granularity** scrollable, select **hour**. Then, click **Next: Tune**. After that, select **Use earliest offset** = **True** and click **Next: Publish**:
+
+![Alt text](report/figures/07_Druid_prepublish.PNG)
+
+Then, click **Next: Edit spec** and finally click **Submit**. The following should appear:
+
+![Alt text](report/figures/08_Druid_submitted.PNG)
+
+and after a while the **PENDING** will transfomr into **RUNNING**. Now we have `Druid` set up, let's configure `Superset`.
+
+
+
+
+
+
+
+
+
+
 
 ## 3.1 Static data
 Firstly we will start with the **static data**. You need to open a `terminal` and go to the folder where the repository or project is located. Then, you need to run the following command:
