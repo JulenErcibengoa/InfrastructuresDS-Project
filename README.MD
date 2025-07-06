@@ -291,36 +291,21 @@ After that, click on **CONNECT** and close the **Connect a database** window. No
 
 ![Alt text](report/figures/13-test-hive-connection.PNG)
 
+To connect `Druid` and `Superset`, the same procedure has to be executed. First click on **+ DATABASE** and select `Apache Druid` on the **SUPPORTED DATABASES** scrolling window:
 
+![Alt text](report/figures/14-druid-superset-connection.png)
 
-
-
- To check it, go to **SQL** --> **SQL Lab** and check whether on **SEE TABLE SCHEMA** appear the following three tables:
-- edges1
-- mbti_labels
-- users1
-
-If everything is working correctly, this is what you should see: 
-
-![Alt text](report/figures/05-see-tables.jpg)
-
-Now the stream data needs to be connected.
-
-
-
-
-## 3.2 Stream data
-
-TO DO
+Now, add the following on **SQLALCHEMI URY**:
 
 ```
-docker-compose -f stream-data-pipeline/docker-compose-dynamic-data.yml up
+hive://hive@hive:10000/default
 ```
 
+and click **CONNECT**. If everything was correct, it should appear something like this:
 
+![Alt text](report/figures/15_everything_works.PNG)
 
-
-
+With this, now it's time to make **SQL** queries and create charts.
 
 
 
