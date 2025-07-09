@@ -182,7 +182,7 @@ On startup, the `Kafka Connect` container installs the MQTT connector plugin and
 
 ### `Druid` (Real-Time Analytics Store)
 
-`Apache Druid` is deployed as the real-time analytics database in the stream pipeline. In this project we use a single-container `Druid` service (via a pre-built image) that encapsulates `Druid’s` necessary components. The `Druid` service is configured to join the same Docker network (kafka-net) so that it can reach the `Kafka` broker by name. We expose `Druid’s` internal ports for monitoring and SQL access: notably, port 8888 (which can be used to access `Druid’s` web console). `Druid` is then reachable from `Superset` since the `pydruid` library is installed.
+`Apache Druid` is deployed as the real-time analytics database in the stream pipeline. In this project we use a single-container `Druid` service (via a pre-built image) that encapsulates `Druid’s` necessary components. The `Druid` service is configured to join the same Docker network (kafka-net) so that it can reach the `Kafka` broker by name. We expose `Druid’s` internal ports for monitoring and SQL access: notably, port 9999 (which can be used to access `Druid’s` web console). `Druid` is then reachable from `Superset` since the `pydruid` library is installed.
 
 
 
